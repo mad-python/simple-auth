@@ -4,6 +4,7 @@ export function useInputField(field) {
   const value = ref(field.value);
 
   const valid = ref(true);
+  const dirty = ref(false);
   const errors = reactive({});
 
   const recreateField = (val) => {
@@ -22,5 +23,14 @@ export function useInputField(field) {
   // Need to recreate every time the field has changed
   watch(value, recreateField);
 
-  return { value, valid, errors };
+  // Init form fields validation
+  recreateField(field.value);
+
+  return {
+    value,
+    valid,
+    errors,
+    dirty,
+    blur: () => (dirty.value = true),
+  };
 }
