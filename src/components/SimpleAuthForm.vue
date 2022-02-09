@@ -2,6 +2,7 @@
   <div class="wrapper">
     <form class="auth-form" @submit.prevent="submit">
       <h1>Simple auth form</h1>
+      <pre>{{ form }}</pre>
 
       <div class="form-input">
         <input
@@ -21,28 +22,35 @@
         />
       </div>
 
-      <button class="btn primary" type="submit">Submit</button>
+      <button class="btn primary" type="submit" :disabled="!form.valid">
+        Submit
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-import { useForm } from "../use/form";
+import { useForm } from "@/use/form";
+import { required, minLength } from "@/validators";
 
 export default {
   setup() {
     const form = useForm({
       email: {
         value: "example@email.com",
+        validators: { required },
       },
       password: {
         value: "somePass123",
+        validators: { required, minLength: minLength(8) },
       },
     });
 
     // Main submit function
     const submit = () => {
-      console.log("Submit function");
+      console.log("Submit function", form);
+      console.log("Email:", form.email.value);
+      console.log("Password:", form.password.value);
     };
 
     return {
@@ -84,18 +92,23 @@ button {
   height: 40px;
   font-size: 16px;
   cursor: pointer;
-  background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  color: #666;
+  color: #fff;
+  background: #91c9ff;
   outline: none;
   transition: 0.5s ease-in-out;
-  box-shadow: 0px 0px 12px -2px #ccc;
+  /* box-shadow: 0px 0px 12px -2px #91c9ff; */
 }
 
 button:hover {
-  background: #91c9ff;
-  color: #fff;
-  box-shadow: 0px 0px 12px -2px #91c9ff;
+  box-shadow: 0px 0px 12px -5px #000;
+}
+button:disabled {
+  opacity: 0.6;
+  color: #666;
+  background: #e8e8e8;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 </style>
