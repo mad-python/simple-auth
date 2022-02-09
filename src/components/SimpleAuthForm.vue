@@ -19,6 +19,9 @@
         <small v-if="form.email.dirty && form.email.errors.required">
           Email field is required
         </small>
+        <small v-else-if="form.email.dirty && form.email.errors.validEmail">
+          Email is incorrect
+        </small>
       </div>
 
       <div
@@ -37,8 +40,10 @@
         <small v-if="form.password.dirty && form.password.errors.required">
           Password field is required
         </small>
-        <small v-if="form.password.dirty && form.password.errors.minLength">
-          Password length is too short (min - 8)
+        <small
+          v-else-if="form.password.dirty && form.password.errors.minLength"
+        >
+          Password must be at least 8 characters
         </small>
       </div>
 
@@ -51,14 +56,14 @@
 
 <script>
 import { useForm } from "@/use/form";
-import { required, minLength } from "@/validators";
+import { required, validEmail, minLength } from "@/validators";
 
 export default {
   setup() {
     const form = useForm({
       email: {
         value: "",
-        validators: { required },
+        validators: { required, validEmail },
       },
       password: {
         value: "",
@@ -68,7 +73,7 @@ export default {
 
     // Main submit function
     const submit = () => {
-      console.log("Submit function", form);
+      console.log("Submit form", form);
       console.log("Email:", form.email.value);
       console.log("Password:", form.password.value);
     };
