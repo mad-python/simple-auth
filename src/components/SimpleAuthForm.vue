@@ -4,11 +4,21 @@
       <h1>Simple auth form</h1>
 
       <div class="form-input">
-        <input type="email" id="auth-form-email" placeholder="email" />
+        <input
+          type="email"
+          id="auth-form-email"
+          placeholder="email"
+          v-model="form.email.value"
+        />
       </div>
 
       <div class="form-input">
-        <input type="password" id="auth-form-password" placeholder="password" />
+        <input
+          type="password"
+          id="auth-form-password"
+          placeholder="password"
+          v-model="form.password.value"
+        />
       </div>
 
       <button class="btn primary" type="submit">Submit</button>
@@ -17,9 +27,18 @@
 </template>
 
 <script>
+import { useForm } from "../use/form";
+
 export default {
   setup() {
-    const form = {};
+    const form = useForm({
+      email: {
+        value: "example@email.com",
+      },
+      password: {
+        value: "somePass123",
+      },
+    });
 
     // Main submit function
     const submit = () => {
